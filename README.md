@@ -9,7 +9,8 @@ The immediate goal of the project at the moment is to create and manage applicat
 - ASP.NET Core 5.0
 - Microsoft SQL Server
 
-3. Getting started
+# 3. Getting started
+
 3.1. Clone or download the project from **https://github.com/tanyabiryuk/LNUbiz**
 
 3.2 Install [ASP.NET Core Runtime 5.0](https://dotnet.microsoft.com/download/dotnet-core/5.0) and [ASP.NET Core SDK 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
