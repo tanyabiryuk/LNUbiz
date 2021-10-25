@@ -31,7 +31,7 @@ namespace LNUbiz.Web
                               IServiceProvider serviceProvider)
         {
             app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/V1/swagger.json", "MyApi"); });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/V1/swagger.json", "LNUbiz"); });
             var supportedCultures = new[]
             {
                 new CultureInfo("uk-UA"),
