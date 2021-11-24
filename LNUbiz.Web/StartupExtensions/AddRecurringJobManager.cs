@@ -13,21 +13,24 @@ namespace LNUbiz.Web.StartupExtensions
 {
     public static class AddRecurringJobManager
     {
-        public static void AddRecurringJobs(this IServiceProvider serviceProvider,
+        public static void AddRecurringJobs(this IServiceProvider     serviceProvider,
                                                  IRecurringJobManager recurringJobManager,
-                                                 IConfiguration Configuration)
+                                                 IConfiguration       Configuration)
         {
+            CreateRolesAsync(serviceProvider, Configuration).Wait();
+
             recurringJobManager.AddOrUpdate("New LNUbiz members greeting",
                                             () => serviceProvider.GetService<IEmailContentService>()
-                                                .GetAuthGreetingEmail(),
-                                            Cron.Daily(), TimeZoneInfo.Local);
+                                                                 .GetAuthGreetingEmail(),
+                                            Cron.Daily(), 
+                                            TimeZoneInfo.Local);
         }
 
         private static async Task CreateRolesAsync(IServiceProvider serviceProvider, IConfiguration Configuration)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-            var roles = new[]
+            var roles       = new[]
             {
                 Roles.Admin,
                 Roles.User
@@ -40,16 +43,16 @@ namespace LNUbiz.Web.StartupExtensions
                     await roleManager.CreateAsync(idRole);
                 }
             }
-            var admin = Configuration.GetSection(Roles.Admin);
+            var admin   = Configuration.GetSection(Roles.Admin);
             var profile = new User
             {
-                Email = admin["Email"],
-                UserName = admin["Email"],
-                FirstName = Roles.Admin,
-                LastName = Roles.Admin,
+                Email          = admin["Email"],
+                UserName       = admin["Email"],
+                FirstName      = Roles.Admin,
+                LastName       = Roles.Admin,
                 EmailConfirmed = true,
-                ImagePath = "default_user_image.png",
-                RegistredOn = DateTime.Now
+                ImagePath      = "default_user_image.png",
+                RegistredOn    = DateTime.Now
             };
             if (await userManager.FindByEmailAsync(admin["Email"]) == null)
             {
