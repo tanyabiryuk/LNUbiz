@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using LNUbiz.BLL.Interfaces;
 using LNUbiz.BLL.Interfaces.UserProfiles;
 using LNUbiz.BLL.Models;
-using LNUbiz.DAL.Entities;
 
 namespace LNUbiz.BLL.Services.EmailSending
 {
@@ -21,7 +19,7 @@ namespace LNUbiz.BLL.Services.EmailSending
         {
             return new EmailModel
             {
-                Title = "Адміністрація сайту LNUbiz",
+                Title   = "Адміністрація сайту LNUbiz",
                 Subject = "Повідомлення про реєстрацію",
                 Message = "Ви зареєструвались в системі LNUbiz використовуючи свій Google-акаунт. "
             };
@@ -32,9 +30,11 @@ namespace LNUbiz.BLL.Services.EmailSending
         {
             return new EmailModel
             {
-                Title = "LNUbiz",
+                Title   = "LNUbiz",
                 Subject = "Вітаємо у системі!",
-                Message = $"Ви успішно активували свій акаунт!\n\nАдміністрація сайту LNUbiz."
+                Message = $"<p>Ви успішно активували свій акаунт!</p> " +
+                          $"<br/>" +
+                          $"<p><i>Адміністрація сайту LNUbiz.</i></p>"
             };
         }
 
@@ -43,7 +43,7 @@ namespace LNUbiz.BLL.Services.EmailSending
         {
             return new EmailModel
             {
-                Title = "LNUbiz",
+                Title   = "LNUbiz",
                 Subject = "Підтвердження реєстрації",
                 Message = $"Підтвердіть реєстрацію, перейшовши за <a href='{confirmationLink}'>посиланням</a>"
             };
@@ -54,7 +54,7 @@ namespace LNUbiz.BLL.Services.EmailSending
         {
             return new EmailModel
             {
-                Title = "Адміністрація сайту LNUbiz",
+                Title   = "Адміністрація сайту LNUbiz",
                 Subject = "Скидання пароля",
                 Message = $"Для скидання пароля перейдіть за <a href='{confirmationLink}'>посиланням</a>"
             };
@@ -65,10 +65,11 @@ namespace LNUbiz.BLL.Services.EmailSending
         {
             return new EmailModel
             {
-                Title = "LNUbiz",
-                Subject = "Вилечення із системи",
-                Message = "<h3>СКОБ!</h3>"
-                          + $"<p>Повідомляємо, що Вас було виключено із системи LNUbiz.\n\nАдміністрація сайту LNUbiz."
+                Title   = "LNUbiz",
+                Subject = "Вилучення із системи",
+                Message = $"<p>Повідомляємо, що Вас було вилучено із системи LNUbiz.!</p> " +
+                          $"<br/>" +
+                          $"<p><i>Адміністрація сайту LNUbiz.</i></p>"
             };
         }
 
