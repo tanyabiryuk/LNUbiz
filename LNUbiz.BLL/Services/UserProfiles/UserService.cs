@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using LNUbiz.BLL.DTO.UserProfiles;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using LNUbiz.BLL.Interfaces;
 using LNUbiz.BLL.Interfaces.AzureStorage;
@@ -13,32 +12,27 @@ namespace LNUbiz.BLL.Services.UserProfiles
 {
     public class UserService : IUserService
     {
-        private readonly IRepositoryWrapper _repoWrapper;
-        private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _env;
+        private readonly IRepositoryWrapper         _repoWrapper;
+        private readonly IMapper                    _mapper;
         private readonly IUserBlobStorageRepository _userBlobStorage;
-        private readonly IUniqueIdService _uniqueId;
+        private readonly IUniqueIdService           _uniqueId;
 
-        public UserService(IRepositoryWrapper repoWrapper,
-            IMapper mapper,
-            IUserBlobStorageRepository userBlobStorage,
-            IWebHostEnvironment env,
-            IUniqueIdService uniqueId)
+        public UserService(IRepositoryWrapper repoWrapper
+                         , IMapper mapper
+                         , IUserBlobStorageRepository userBlobStorage
+                         , IUniqueIdService uniqueId)
         {
-            _repoWrapper = repoWrapper;
-            _mapper = mapper;
+            _repoWrapper     = repoWrapper;
+            _mapper          = mapper;
             _userBlobStorage = userBlobStorage;
-            _env = env;
-            _uniqueId = uniqueId;
+            _uniqueId        = uniqueId;
         }
 
         /// <inheritdoc />
         public async Task<UserDTO> GetUserAsync(string userId)
         {
             var user = await _repoWrapper.User.GetFirstAsync(
-                i => i.Id == userId,
-                i =>
-                    i.Include(g => g.BusinessTripRequests));
+                i => i.Id == userId);
             var model = _mapper.Map<User, UserDTO>(user);
 
             return model;
