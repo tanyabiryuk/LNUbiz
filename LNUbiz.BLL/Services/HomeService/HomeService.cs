@@ -16,7 +16,7 @@ namespace LNUbiz.BLL.Services
         public Task SendEmailAdmin(ContactsDto contactDTO)
         {
             return _emailSendingService.SendEmailAsync(
-                "LNUbiz.admin@lnu.edu.ua",
+                "lnubiz.manager@gmail.com",
                 "Питання користувачів",
                 $"Контактні дані користувача : Електронна пошта {contactDTO.Email}, " +
                 $"Ім'я {contactDTO.Name}," +
