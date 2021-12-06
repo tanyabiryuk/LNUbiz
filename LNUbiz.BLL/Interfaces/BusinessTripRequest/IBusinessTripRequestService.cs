@@ -18,14 +18,12 @@ namespace LNUbiz.BLL.Services.Interfaces
         Task<BusinessTripRequestDTO> GetByIdAsync(User user, int id);
 
         /// <summary>
-        /// Method to get data for the BusinessTrip request edit form
+        /// Method to get all requests that the userId has access to
         /// </summary>
-        /// <param name="user">Authorized user</param>
-        /// <param name="id">BusinessTrip request identification number</param>
-        /// <returns>BusinessTrip request model</returns>
-        /// <exception cref="System.UnauthorizedAccessException">Thrown when user hasn't access to BusinessTrip request</exception>
-        /// <exception cref="System.NullReferenceException">Thrown when BusinessTrip request doesn't exist</exception>
-        Task<BusinessTripRequestDTO> GetEditFormByIdAsync(User user, int id);
+        /// <param name="userId">Authorized user id</param>
+        /// <returns>List of BusinessTrip request models</returns>
+        Task<IEnumerable<BusinessTripRequestDTO>> GetAllAsync(string userId);
+
 
         /// <summary>
         /// Method to get all requests that the user has access to
