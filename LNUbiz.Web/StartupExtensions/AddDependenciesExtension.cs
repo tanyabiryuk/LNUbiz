@@ -34,36 +34,43 @@ namespace LNUbiz.Web.StartupExtensions
     {
         public static IServiceCollection AddDependency(this IServiceCollection services)
         {
-            services.AddScoped(typeof(ILoggerService<>), typeof(LoggerService<>));
-            services.AddScoped<BusinessTripRequestAccessSettings, BusinessTripRequestAccessSettings>();
-            services.AddScoped<IAdminService, AdminService>();
-            services.AddScoped<IAdminTypeService, AdminTypeService>();
-            services.AddScoped<IAuthEmailService, AuthEmailService>();
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IDateTimeHelper, DateTimeHelper>();
-            services.AddScoped<IEmailContentService, EmailContentService>();
-            services.AddScoped<IEmailReminderService, EmailReminderService>();
-            services.AddScoped<IEmailSendingService, EmailSendingService>();
-            services.AddScoped<IFileManager, FileManager>();
-            services.AddScoped<IFileStreamManager, FileStreamManager>();
-            services.AddScoped<IGlobalLoggerService, GlobalLoggerService>();
-            services.AddScoped<IHomeService, HomeService>();
-            services.AddScoped<INotificationService, NotificationService>();
-            services.AddScoped<IPdfService, PdfService>();
-            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-            services.AddScoped<IResources, BLL.Services.Resources.Resources>();
-            services.AddScoped<IUserBlobStorageRepository, UserBlobStorageRepository>();
-            services.AddScoped<IUserManagerService, UserManagerService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<BusinessTripRequestAccessSettings>();
-            services.AddScoped<ISecurityModel, SecurityModel>();
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddSingleton<IAzureBlobConnectionFactory, AzureBlobConnectionFactory>();
-            services.AddSingleton<INotificationConnectionManager, NotificationConnectionManager>();
             services.AddSingleton<UserNotificationHandler>();
-            services.AddTransient<IJwtService, JwtService>();
+            services.AddScoped<BusinessTripRequestAccessSettings>();
+
+            services.AddScoped<IResources, BLL.Services.Resources.Resources>();
+            services.AddScoped(typeof(ILoggerService<>), typeof(LoggerService<>));
+
+            
+            services.AddScoped<IEmailContentService             , EmailContentService>();
+            services.AddScoped<IEmailReminderService            , EmailReminderService>();
+            services.AddScoped<IEmailSendingService             , EmailSendingService>();
+            services.AddScoped<INotificationService             , NotificationService>();
+            services.AddScoped<IBusinessTripRequestAccessService, BusinessTripRequestAccessService>();
+            services.AddScoped<IUserBlobStorageRepository       , UserBlobStorageRepository>();
+            services.AddScoped<IBusinessTripRequestService      , BusinessTripRequestService>();
+            services.AddSingleton<IActionContextAccessor        , ActionContextAccessor>();
+            services.AddSingleton<IAzureBlobConnectionFactory   , AzureBlobConnectionFactory>();
+            services.AddSingleton<INotificationConnectionManager, NotificationConnectionManager>();
+            services.AddScoped<IGlobalLoggerService             , GlobalLoggerService>();
+
+            services.AddScoped<IAdminService      , AdminService>();
+            services.AddScoped<IAdminTypeService  , AdminTypeService>();
+            services.AddScoped<IAuthEmailService  , AuthEmailService>();
+            services.AddScoped<IAuthService       , AuthService>();
+            services.AddScoped<IDateTimeHelper    , DateTimeHelper>();
+            services.AddScoped<IFileManager       , FileManager>();
+            services.AddScoped<IFileStreamManager , FileStreamManager>();
+            services.AddScoped<IHomeService       , HomeService>();
+            services.AddScoped<IRepositoryWrapper , RepositoryWrapper>();
+            services.AddScoped<IPdfService        , PdfService>();
+            services.AddScoped<IPdfService        , PdfService>();
+            services.AddScoped<IUserManagerService, UserManagerService>();
+            services.AddScoped<IUserService       , UserService>();
+            services.AddScoped<ISecurityModel     , SecurityModel>();
+            services.AddTransient<IJwtService     , JwtService>();
             services.AddTransient<IUniqueIdService, UniqueIdService>();
-            services.AddSingleton<IUserMapService, UserMapService>();
+            services.AddSingleton<IUserMapService , UserMapService>();
+
             return services;
         }
     }
