@@ -3,10 +3,10 @@ using LNUbiz.BLL.Interfaces;
 using LNUbiz.BLL.Interfaces.Jwt;
 using LNUbiz.BLL.Interfaces.Logging;
 using LNUbiz.BLL.Interfaces.Resources;
-using LNUbiz.BLL.Models;
 using LNUbiz.BLL.Services.Interfaces;
-using LNUbiz.Resources;
+using LNUbiz.DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLog.Extensions.Logging;
 using System;
@@ -18,32 +18,30 @@ namespace LNUbiz.Web.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly IAuthService _authService;
-        private readonly IJwtService _jwtService;
+        private readonly IAuthService                    _authService;
+        private readonly IJwtService                     _jwtService;
         private readonly ILoggerService<LoginController> _loggerService;
-        private readonly IResources _resources;
-        private readonly IUserManagerService _userManagerService;
+        private readonly IResources                      _resources;
 
-        public LoginController(
-            IAuthService authService,
-            IResources resources,
-            IJwtService jwtService,
-            ILoggerService<LoginController> loggerService,
-            IUserManagerService userManagerService
-            )
+        public LoginController(IAuthService                    authService
+                             , IResources                      resources
+                             , IJwtService                     jwtService
+                             , ILoggerService<LoginController> loggerService
+                             , IUserManagerService             userManagerService
+                             , UserManager<User>               userManager)
         {
-            _authService = authService;
-            _resources = resources;
-            _jwtService = jwtService;
+            _authService   = authService;
+            _resources     = resources;
+            _jwtService    = jwtService;
             _loggerService = loggerService;
-            _userManagerService = userManagerService;
         }
 
         [HttpGet("GoogleClientId")]
         [AllowAnonymous]
         public IActionResult GetGoogleClientId()
         {
-            return Ok(new { id = ConfigSettingLayoutRenderer.DefaultConfiguration.GetSection("GoogleAuthentication")["GoogleClientId"] });
+            return Ok(new { id = ConfigSettingLayoutRenderer.DefaultConfiguration
+                                                            .GetSection("GoogleAuthentication")["GoogleClientId"] });
         }
 
         [HttpPost("signin/google")]

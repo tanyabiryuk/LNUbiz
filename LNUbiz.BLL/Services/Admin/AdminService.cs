@@ -13,19 +13,19 @@ namespace LNUbiz.BLL.Services
 {
     public class AdminService : IAdminService
     {
-        private readonly IMapper _mapper;
-        private readonly IRepositoryWrapper _repoWrapper;
+        private readonly IMapper                   _mapper;
+        private readonly IRepositoryWrapper        _repoWrapper;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<User>         _userManager;
 
-        public AdminService(IRepositoryWrapper repoWrapper,
-                            UserManager<User> userManager,
-                            IMapper mapper,
-                            RoleManager<IdentityRole> roleManager)
+        public AdminService(IRepositoryWrapper        repoWrapper
+                          , UserManager<User>         userManager
+                          , IMapper                   mapper
+                          , RoleManager<IdentityRole> roleManager)
         {
             _repoWrapper = repoWrapper;
             _userManager = userManager;
-            _mapper = mapper;
+            _mapper      = mapper;
             _roleManager = roleManager;
         }
 
@@ -95,10 +95,6 @@ namespace LNUbiz.BLL.Services
         /// <inheritdoc />
         public async Task<IEnumerable<UserDTO>> GetUsersAsync()
         {
-            var lowerRoles = new List<string>
-            {
-                Roles.User
-            };
             var users = await _repoWrapper.User.GetAllAsync();
             var usersDtos = new List<UserDTO>();
             foreach (var user in users)

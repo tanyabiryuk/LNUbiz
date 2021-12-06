@@ -1,17 +1,12 @@
 ﻿using AutoMapper;
-using LNUbiz.BLL.DTO;
 using LNUbiz.BLL.DTO.UserProfiles;
 using LNUbiz.BLL.Interfaces.Logging;
 using LNUbiz.BLL.Interfaces.UserProfiles;
 using LNUbiz.BLL.Services.Interfaces;
 using LNUbiz.Web.Models.UserModels;
-using LNUbiz.Web.Models.UserModels;
 using LNUbiz.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using LNUbiz.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -23,22 +18,23 @@ namespace LNUbiz.Web.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
-        private readonly IUserManagerService _userManagerService;
+        private readonly IUserService                   _userService;
+        private readonly IUserManagerService            _userManagerService;
         private readonly ILoggerService<UserController> _loggerService;
-        private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
+        private readonly IMapper                        _mapper;
+        private readonly UserManager<User>              _userManager;
 
-        public UserController(IUserService userService,
-            IUserManagerService userManagerService,
-            ILoggerService<UserController> loggerService,
-            IMapper mapper, UserManager<User> userManager)
+        public UserController(IUserService userService
+                            , IUserManagerService userManagerService
+                            , ILoggerService<UserController> loggerService
+                            , IMapper mapper
+                            , UserManager<User> userManager)
         {
-            _userService = userService;
+            _userService        = userService;
             _userManagerService = userManagerService;
-            _loggerService = loggerService;
-            _mapper = mapper;
-            _userManager = userManager;
+            _loggerService      = loggerService;
+            _mapper             = mapper;
+            _userManager        = userManager;
         }
 
 
@@ -51,7 +47,7 @@ namespace LNUbiz.Web.Controllers
         /// <response code="404">User not found</response>
         [HttpGet("{userId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> Get(string userId)
+        public async Task<IActionResult> Get([FromRoute] string userId)
         {
             if (string.IsNullOrEmpty(userId))
             {
