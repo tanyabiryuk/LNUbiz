@@ -8,5 +8,7 @@ namespace LNUbiz.BLL.Services
     public interface IBusinessTripRequestAccessGetter
     {
         Task<IEnumerable<DatabaseEntities.BusinessTripRequest>> GetRequestAsync(string userId);
+
+        Task<bool> CheckAccessAsync(string userId, int requestId);
     }
 }

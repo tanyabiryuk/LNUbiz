@@ -18,5 +18,12 @@ namespace LNUbiz.BLL.Services
         {
             return await _repositoryWrapper.BusinessTripRequests.GetAllAsync(predicate: r => r.UserId == userId);
         }
+
+        public async Task<bool> CheckAccessAsync(string userId, int requestId)
+        {
+            return (await _repositoryWrapper.BusinessTripRequests.GetFirstOrDefaultAsync(
+                     predicate: r => r.Id == requestId 
+                                  && r.UserId == userId)) != null;
+        }
     }
 }

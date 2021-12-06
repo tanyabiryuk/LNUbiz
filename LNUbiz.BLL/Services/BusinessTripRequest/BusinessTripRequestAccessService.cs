@@ -43,8 +43,15 @@ namespace LNUbiz.BLL.Services
 
         public async Task<bool> HasAccessAsync(DatabaseEntities.User claimsPrincipal, int requestId)
         {
-            var reuests = await GetRequestsAsync(claimsPrincipal);
-            return reuests.Any(c => c.Id == requestId);
+            var roles = await _userManager.GetRolesAsync(claimsPrincipal);
+            foreach (var key in _businessTripRequestAccessGettersAccessGetters.Keys)
+            {
+                if (roles.Contains(key))
+                {
+                    return await _businessTripRequestAccessGettersAccessGetters[key].CheckAccessAsync(claimsPrincipal.Id, requestId);
+                }
+            }
+            return false;
         }
     }
 }
