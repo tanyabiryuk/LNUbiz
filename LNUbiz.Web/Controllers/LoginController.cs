@@ -44,6 +44,13 @@ namespace LNUbiz.Web.Controllers
                                                             .GetSection("GoogleAuthentication")["GoogleClientId"] });
         }
 
+        /// <summary>
+        /// Method for logining in system with Google account
+        /// </summary>
+        /// <param name="googleToken">Login model(dto)</param>
+        /// <returns>Answer from backend for login method</returns>
+        /// <response code="200">Successful operation</response>
+        /// <response code="404">Problems with logining</response>
         [HttpPost("signin/google")]
         [AllowAnonymous]
         public async Task<IActionResult> GoogleLogin(string googleToken)
@@ -51,19 +58,21 @@ namespace LNUbiz.Web.Controllers
             try
             {
                 var user = await _authService.GetGoogleUserAsync(googleToken);
-                if (user == null)
-                {
-                    return BadRequest();
-                }
                 var generatedToken = await _jwtService.GenerateJWTTokenAsync(user);
-
                 return Ok(new { token = generatedToken });
+            }
+            catch (NullReferenceException)
+            {
+                return BadRequest(_resources.ResourceForErrors["Login-NotRegistered"]);
+            }
+            catch (InvalidOperationException)
+            {
+                return BadRequest(_resources.ResourceForErrors["Login-NotConfirmed"]);
             }
             catch (Exception exc)
             {
                 _loggerService.LogError(exc.Message);
             }
-
             return BadRequest();
         }
 

@@ -147,30 +147,56 @@ namespace LNUbiz.BLL.Services
 
             var response = await httpResponseMessage.Content.ReadAsStringAsync();
             var googleApiTokenInfo = JsonConvert.DeserializeObject<GoogleApiTokenInfo>(response);
-            var user = await _userManager.FindByEmailAsync(googleApiTokenInfo.Email);
-            if (user == null)
+            var user = await _userManager.FindByEmailAsync(googleApiTokenInfo.Email)?? throw new NullReferenceException();
+            if (!user.EmailConfirmed)
             {
-                user = new User
-                {
-                    UserName = googleApiTokenInfo.Email,
-                    Email = googleApiTokenInfo.Email,
-                    FirstName = googleApiTokenInfo.GivenName,
-                    LastName = googleApiTokenInfo.FamilyName ?? googleApiTokenInfo.GivenName,
-                    ImagePath = "default_user_image.png",
-                    EmailConfirmed = true,
-                    RegistredOn = DateTime.Now
-                };
-                var createResult = await _userManager.CreateAsync(user);
-                if (createResult.Succeeded)
-                {
-                    var emailContent = _emailContentService.GetAuthGoogleRegisterEmail();
-                    await _emailSendingService.SendEmailAsync(user.Email, emailContent.Subject, emailContent.Message, emailContent.Title);
-                }
-                else
-                    throw new ArgumentException("Failed creation of user");
-                await _userManager.AddToRoleAsync(user, Roles.User);
+                throw new InvalidOperationException();
             }
             await _signInManager.SignInAsync(user, isPersistent: false);
+            return _mapper.Map<User, UserDTO>(user);
+        }
+
+        ///<inheritdoc/>
+        public async Task<UserDTO> CreateGoogleUserAsync(string providerToken)
+        {
+            string googleApiTokenInfoUrl =
+                ConfigSettingLayoutRenderer.DefaultConfiguration.GetSection("GoogleAuthentication")["GoogleApiTokenInfoUrl"];
+            var httpClient = new HttpClient();
+            var requestUri = new Uri(string.Format(googleApiTokenInfoUrl, providerToken));
+
+            HttpResponseMessage httpResponseMessage = await httpClient.GetAsync(requestUri);
+
+            if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpRequestException("Status code isn`t correct");
+            }
+
+            var response = await httpResponseMessage.Content.ReadAsStringAsync();
+            var googleApiTokenInfo = JsonConvert.DeserializeObject<GoogleApiTokenInfo>(response);
+            var user = await _userManager.FindByEmailAsync(googleApiTokenInfo.Email);
+            if(user != null)
+            {
+                throw new InvalidOperationException();
+            }
+            user = new User
+            {
+                UserName = googleApiTokenInfo.Email,
+                Email = googleApiTokenInfo.Email,
+                FirstName = googleApiTokenInfo.GivenName,
+                LastName = googleApiTokenInfo.FamilyName ?? googleApiTokenInfo.GivenName,
+                ImagePath = "default_user_image.png",
+                EmailConfirmed = false,
+                RegistredOn = DateTime.Now
+            };
+            var createResult = await _userManager.CreateAsync(user);
+            if (createResult.Succeeded)
+            {
+                var emailContent = _emailContentService.GetAuthGoogleRegisterEmail();
+                await _emailSendingService.SendEmailAsync(user.Email, emailContent.Subject, emailContent.Message, emailContent.Title);
+            }
+            else
+                throw new ArgumentException("Failed creation of user");
+            await _userManager.AddToRoleAsync(user, Roles.User);
             return _mapper.Map<User, UserDTO>(user);
         }
 

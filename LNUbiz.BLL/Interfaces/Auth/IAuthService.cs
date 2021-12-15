@@ -89,6 +89,13 @@ namespace LNUbiz.BLL.Interfaces
         Task<UserDTO> GetGoogleUserAsync(string providerToken);
 
         /// <summary>
+        /// Validates google token and creates user
+        /// </summary>
+        /// <param name="providerToken"></param>
+        /// <returns>Returns Google user information</returns>
+        Task<UserDTO> CreateGoogleUserAsync(string providerToken);
+
+        /// <summary>
         /// Get id for user from database
         /// </summary>
         /// <param name="user"></param>
