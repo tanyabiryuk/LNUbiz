@@ -17,12 +17,12 @@ namespace LNUbiz.Web.StartupExtensions
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                 //.AddGoogle(options =>
-                 //{
-                 //    options.ClientId = configuration.GetSection("GoogleAuthentication:GoogleClientId").Value;
-                 //    options.ClientSecret = configuration.GetSection("GoogleAuthentication:GoogleClientSecret").Value;
-                 //    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                 //})
+                 .AddGoogle(options =>
+                 {
+                     options.ClientId = configuration.GetSection("GoogleAuthentication:GoogleClientId").Value;
+                     options.ClientSecret = configuration.GetSection("GoogleAuthentication:GoogleClientSecret").Value;
+                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                 })
                  .AddJwtBearer(config =>
                  {
                      config.RequireHttpsMetadata = false;

@@ -18,10 +18,12 @@ namespace LNUbiz.BLL.Services
             return _emailSendingService.SendEmailAsync(
                 "lnubiz.manager@gmail.com",
                 "Питання користувачів",
-                $"Контактні дані користувача : Електронна пошта {contactDTO.Email}, " +
-                $"Ім'я {contactDTO.Name}," +
-                $"Телефон {contactDTO.PhoneNumber}  " +
-                $"Опис питання : {contactDTO.FeedBackDescription}",
+                $"<p>Контактні дані користувача :</p>" +
+                $"<p>Електронна пошта {contactDTO.Email}, </p>" +
+                $"<p>Ім'я {contactDTO.Name}, </p>" +
+                $"<p>Телефон {contactDTO.PhoneNumber}  </p>" +
+                $"<p>Опис питання : </p>" +
+                $"<p>{contactDTO.FeedBackDescription} </p>",
                 contactDTO.Email);
         }
     }
