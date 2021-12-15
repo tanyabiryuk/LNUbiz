@@ -89,7 +89,7 @@ namespace LNUbiz.Web.Controllers
                     return BadRequest(_resources.ResourceForErrors["Forgot-NotRegisteredUser"]);
                 }
                 string token = await _authService.GenerateResetTokenAsync(userDto);
-                var confirmationLink = string.Format("https://eplast.westeurope.cloudapp.azure.com/resetPassword?token={0}", HttpUtility.UrlEncode(token));
+                var confirmationLink = string.Format("http://localhost:3000/resetPassword?token={0}", HttpUtility.UrlEncode(token));
                 await _authEmailServices.SendEmailResetingAsync(confirmationLink, forgotpasswordDto);
                 return Ok(_resources.ResourceForErrors["ForgotPasswordConfirmation"]);
             }
